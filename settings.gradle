@@ -15,5 +15,5 @@ dependencyResolutionManagement {
         maven { url "https://s01.oss.sonatype.org/content/repositories/releases" }
     }
 }
-rootProject.name = "BaseHook"
+rootProject.name = "QDReadHook"
 include ':app'
