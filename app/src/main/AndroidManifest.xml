@@ -18,12 +18,17 @@
             </intent-filter>
         </activity>
 
+        <provider
+            android:name=".MeTabCatalogProvider"
+            android:authorities="${applicationId}.me_tab_catalog"
+            android:exported="true" />
+
         <meta-data
             android:name="xposedmodule"
             android:value="true" />
         <meta-data
             android:name="xposeddescription"
-            android:value="起点阅读增强功能 目前仅支持:7.9.228-758" />
+            android:value="起点阅读增强：签到、奖励、界面定制与拦截选项" />
         <meta-data
             android:name="xposedminversion"
             android:value="54+" />

@@ -1,39 +1,48 @@
-<PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:android="http://schemas.android.com/apk/res/android">
-
-    <PreferenceCategory app:title="@string/main_title">
-
-        <EditTextPreference
-            app:defaultValue="com.qidian.QDReader"
-            app:key="packageName"
-            app:title="@string/packageName"
-            android:defaultValue="com.qidian.QDReader"
-            app:useSimpleSummaryProvider="true" />
-
-    </PreferenceCategory>
-
-    <PreferenceCategory app:title="@string/header">
-
-        <SwitchPreferenceCompat
-            app:key="isEnableAutoSign"
+<PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto">
+    <PreferenceCategory app:title="@string/group_automation">
+        <SwitchPreferenceCompat app:defaultValue="false" app:key="isEnableAutoSign"
             app:title="@string/sw_autosignin" />
-
-        <SwitchPreferenceCompat
-            app:key="isEnableOldLayout"
-            app:title="@string/sw_old_layout" />
-
-        <SwitchPreferenceCompat
-            app:key="isEnableLocalCard"
-            app:title="@string/sw_local_card" />
-
-        <SwitchPreferenceCompat
-            app:key="isEnableRemoveBookshelfFloat"
-            app:title="@string/sw_bookshelf_float" />
-
-        <SwitchPreferenceCompat
-            app:key="isEnableRemoveBookshelfBottomAd"
-            app:title="@string/sw_bottom_ad" />
-
+        <SwitchPreferenceCompat app:defaultValue="false" app:key="isEnableRewardWithoutAd"
+            app:title="@string/sw_reward_ad" />
     </PreferenceCategory>
-
+    <PreferenceCategory app:title="@string/group_pages">
+        <PreferenceScreen app:key="screen_me_tab" app:title="@string/title_me_tab">
+            <SwitchPreferenceCompat app:defaultValue="false" app:key="isEnableCustomizeMeTab"
+                app:title="@string/enable_customization" />
+            <MultiSelectListPreference app:key="hiddenMeTabItems" app:title="@string/me_tab_hidden_items" />
+        </PreferenceScreen>
+        <PreferenceScreen app:key="screen_navigation" app:title="@string/title_navigation">
+            <SwitchPreferenceCompat app:defaultValue="false" app:key="isEnableCustomizeBottomNavigation"
+                app:title="@string/enable_customization" />
+            <MultiSelectListPreference app:key="hiddenBottomNavigationItems" app:title="@string/navigation_hidden_items" />
+        </PreferenceScreen>
+        <MultiSelectListPreference app:key="homeOptions" app:title="@string/title_home"
+            app:entries="@array/home_entries" app:entryValues="@array/home_values" />
+        <MultiSelectListPreference app:key="searchOptions" app:title="@string/title_search"
+            app:entries="@array/search_entries" app:entryValues="@array/search_values" />
+    </PreferenceCategory>
+    <PreferenceCategory app:title="@string/group_reading">
+        <MultiSelectListPreference app:key="chapterCommentOptions" app:title="@string/title_comments"
+            app:entries="@array/comment_entries" app:entryValues="@array/comment_values" />
+        <PreferenceScreen app:key="screen_chapter_end" app:title="@string/title_chapter_end">
+            <SwitchPreferenceCompat app:defaultValue="false" app:key="isEnableCustomizeChapterEnd"
+                app:title="@string/enable_customization" />
+            <MultiSelectListPreference app:key="chapterEndOptions" app:title="@string/chapter_end_options"
+                app:entries="@array/chapter_end_entries" app:entryValues="@array/chapter_end_values" />
+        </PreferenceScreen>
+        <SwitchPreferenceCompat app:defaultValue="false" app:key="isEnableMemberCardBackground"
+            app:title="@string/title_member_background" />
+    </PreferenceCategory>
+    <PreferenceCategory app:title="@string/group_cleanup">
+        <MultiSelectListPreference app:key="adBlockOptions" app:title="@string/title_ads"
+            app:entries="@array/ad_entries" app:entryValues="@array/ad_values" />
+        <MultiSelectListPreference app:key="redDotOptions" app:title="@string/red_dot_options"
+            app:entries="@array/red_dot_entries" app:entryValues="@array/red_dot_values" />
+    </PreferenceCategory>
+    <PreferenceCategory app:title="@string/group_advanced">
+        <MultiSelectListPreference app:key="interceptOptions" app:title="@string/title_intercept"
+            app:entries="@array/intercept_entries" app:entryValues="@array/intercept_values" />
+        <EditTextPreference app:defaultValue="com.qidian.QDReader" app:key="packageName"
+            app:title="@string/title_package" app:useSimpleSummaryProvider="true" />
+    </PreferenceCategory>
 </PreferenceScreen>

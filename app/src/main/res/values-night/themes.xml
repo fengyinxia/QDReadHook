@@ -1,6 +1,19 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
     <style name="Theme.BaseHook" parent="Theme.Material3.DayNight.NoActionBar">
-
+        <item name="colorPrimary">@color/settings_primary</item>
+        <item name="colorOnPrimary">@color/settings_on_primary</item>
+        <item name="colorPrimaryContainer">@color/settings_primary_container</item>
+        <item name="colorOnPrimaryContainer">@color/settings_on_primary_container</item>
+        <item name="colorSecondary">@color/settings_primary</item>
+        <item name="colorSurface">@color/settings_surface</item>
+        <item name="colorOnSurface">@color/settings_on_surface</item>
+        <item name="colorOnSurfaceVariant">@color/settings_on_surface_variant</item>
+        <item name="colorOutline">@color/settings_outline</item>
+        <item name="android:windowLightStatusBar">false</item>
+        <item name="android:windowLightNavigationBar">false</item>
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:navigationBarColor">@android:color/transparent</item>
+        <item name="android:windowSoftInputMode">adjustResize</item>
     </style>
 </resources>

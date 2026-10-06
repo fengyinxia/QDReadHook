@@ -1,0 +1,122 @@
+<resources>
+    <string-array name="ad_entries">
+        <item>闪屏广告</item>
+        <item>GDT广告</item>
+        <item>主页-每日阅读广告</item>
+        <item>主页-书架顶部广告</item>
+        <item>主页-书架活动弹框</item>
+        <item>主页-书架浮窗活动</item>
+        <item>我-中间广告</item>
+        <item>阅读页-浮窗广告</item>
+        <item>阅读页-打赏小剧场</item>
+        <item>阅读页-最后一页-中间广告</item>
+        <item>阅读页-最后一页-弹框广告</item>
+    </string-array>
+    <string-array name="ad_values">
+        <item>splash_ad</item>
+        <item>gdt_ad</item>
+        <item>home_daily_read_ad</item>
+        <item>home_book_shelf_top_ad</item>
+        <item>home_book_shelf_activity_ad</item>
+        <item>home_book_shelf_float_window_ad</item>
+        <item>me_middle_ad</item>
+        <item>read_float_window_ad</item>
+        <item>read_reward_theater_ad</item>
+        <item>read_last_page_middle_ad</item>
+        <item>read_last_page_dialog_ad</item>
+    </string-array>
+    <string-array name="intercept_entries">
+        <item>WebSocket</item>
+        <item>发帖图片水印</item>
+        <item>同意隐私政策弹框</item>
+        <item>隐私政策更新弹框</item>
+        <item>检测更新</item>
+        <item>自动跳转精选</item>
+        <item>通知权限弹框</item>
+        <item>部分环境检测</item>
+        <item>阅读页水印</item>
+        <item>青少年模式弹框</item>
+        <item>青少年模式请求</item>
+        <item>首次安装分析</item>
+        <item>跟踪设备信息</item>
+        <item>下载游戏</item>
+        <item>闪屏上报</item>
+    </string-array>
+    <string-array name="intercept_values">
+        <item>websocket</item>
+        <item>post_image_watermark</item>
+        <item>agree_privacy_policy_dialog</item>
+        <item>privacy_policy_update_dialog</item>
+        <item>check_update</item>
+        <item>auto_jump_daily_recommend</item>
+        <item>notification_permission_dialog</item>
+        <item>environment_check</item>
+        <item>read_page_watermark</item>
+        <item>teenager_mode_dialog</item>
+        <item>teenager_mode_request</item>
+        <item>first_install_analysis</item>
+        <item>track_device_info</item>
+        <item>download_game</item>
+        <item>splash_report</item>
+    </string-array>
+    <string-array name="comment_entries">
+        <item>阅读页-章评图片长按保存原图</item>
+        <item>阅读页-章评图片长按保存原图对话框</item>
+        <item>阅读页-章评音频导出对话框</item>
+        <item>阅读页-章评评论长按复制</item>
+    </string-array>
+    <string-array name="comment_values">
+        <item>read_chapter_comment_image_long_click_save_original_image</item>
+        <item>read_chapter_comment_image_long_click_save_original_image_dialog</item>
+        <item>read_chapter_comment_audio_export_dialog</item>
+        <item>read_chapter_comment_comment_long_click_copy</item>
+    </string-array>
+    <string-array name="chapter_end_entries">
+        <item>阅读页-章末作家说</item>
+        <item>阅读页-章末本章说</item>
+        <item>阅读页-章末底部推荐票等</item>
+        <item>阅读页-章末激励视频</item>
+        <item>阅读页-章末疯狂更新</item>
+        <item>阅读页-章末新用户对话框阅读器</item>
+    </string-array>
+    <string-array name="chapter_end_values">
+        <item>read_chapter_end_author_say</item>
+        <item>read_chapter_end_book_say</item>
+        <item>read_chapter_end_bottom_recommend</item>
+        <item>read_chapter_end_reward_video</item>
+        <item>read_chapter_end_fantastic_update</item>
+        <item>read_chapter_end_new_user_dialog</item>
+    </string-array>
+    <string-array name="home_entries">
+        <item>主页-顶部宝箱提示</item>
+        <item>书架-每日导读</item>
+        <item>书架-顶部标题</item>
+    </string-array>
+    <string-array name="home_values">
+        <item>home_top_box_tip</item>
+        <item>book_shelf_daily_recommend</item>
+        <item>book_shelf_top_title</item>
+    </string-array>
+    <string-array name="red_dot_entries">
+        <item>部分小红点</item>
+        <item>我-右上角消息红点</item>
+        <item>底部导航栏</item>
+    </string-array>
+    <string-array name="red_dot_values">
+        <item>part_red_dot</item>
+        <item>me_red_dot</item>
+        <item>bottom_navigation_bar</item>
+    </string-array>
+    <string-array name="search_entries">
+        <item>搜索历史</item>
+        <item>搜索发现</item>
+        <item>搜索排行榜</item>
+        <item>为你推荐</item>
+    </string-array>
+    <string-array name="search_values">
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+    </string-array>
+</resources>

@@ -1,28 +1,92 @@
 # QDReadHook
 
-![above](https://img.shields.io/badge/Android-7.0%20or%20above-brightgreen.svg)
-[![Latest Release](https://img.shields.io/github/release/xihan123/QDReadHook.svg)](../../releases)
-![downloads](https://img.shields.io/github/downloads/xihan123/QDReadHook/total)
+起点阅读 Xposed / LSPosed 模块，保留独立的 **QD 设置** 页面，提供签到、奖励流程辅助、界面定制和按需拦截。
 
----
+![Android](https://img.shields.io/badge/Android-7.0%2B-brightgreen)
+[![Releases](https://img.shields.io/github/v/release/fengyinxia/QDReadHook)](../../releases)
 
-## 起点阅读 Xp模块
+> 当前适配与日志核对基于起点 **7.9.428 / 1706**。Hook 成功安装不等于功能效果或奖励到账已经验证，其他宿主版本需重新核对。
 
-简单5个功能:
-1.自动签到
-2.新旧版布局
-3.本地至尊卡
-4.去书架右下角浮窗
-5.去底部导航栏中心广告
+## 已实现功能
 
----
+| 分类 | 功能 |
+| --- | --- |
+| 自动操作 | 自动签到、免广告领取奖励辅助 |
+| 页面定制 | 我 Tab 菜单、底部导航、主页选项、搜索分组 |
+| 阅读体验 | 章评原图入口、图片地址弹框、音频导出 / 复制地址、评论复制、章末模块隐藏、会员卡背景列表展示调整 |
+| 内容净化 | 小红点、11 项广告拦截 |
+| 高级设置 | 15 项拦截选项、宿主包名 |
 
-## [类名方法名字段名获取方法](Tutorial.md)
+### 实现边界
 
----
+- 自动签到在签到控件更新后识别“签到”按钮，延迟点击并进行短时间去重；不是独立的每日任务调度器。
+- 免广告奖励使用 DexKit 定位特定 Web 奖励入口，保留失败回退，不统一改写任意 WebView 回调。**本地回调分发不代表服务端发奖，实际领取与到账仍未验证。**
+- 我 Tab 和导航按用户选择隐藏项目；动态目录仅交换菜单标题，不交换账户信息或未读计数，不允许宿主修改设置和隐藏名单。
+- 广告、拦截和其他多选项目按需启用。**GDT 广告拦截会停用广点通初始化，可能影响原生视频奖励回退，默认不选中。**
+- 章评音频输出到 `Music/QDReader`；Android 10+ 使用 MediaStore。不上传媒体，不记录评论内容或媒体地址。
+- 搜索隐藏仅改变显示列表，不清除搜索历史数据库；章末未知模块保留。
+- 会员卡背景仅调整本地背景列表字段，不修改账户会员身份、余额、购买记录或服务端响应，服务端校验仍有效。
+- 不恢复强制旧版布局、本地至尊卡、旧版版本映射和旧独立广告开关。
+- **每日自动完成福利中心广告任务未实现，相关开发已按用户要求暂停。**
 
-## 截图
+## MD3 独立设置页
 
-![image](https://github.com/xihan123/QDReadHook/blob/master/Screenshots/1.jpg?raw=true)
+沿用 Material 3 Views 与 AndroidX Preference 存储，不引入 Compose：
 
----
+- 顶部应用栏与帮助入口，五个功能分组、圆角容器、跟随系统的明暗主题；Android 12+ 支持动态取色。
+- 多选功能进入独立子页；长列表提供搜索，明确“勾选即隐藏 / 拦截 / 开启”的含义。
+- 多选先编辑副本，点击保存后写入；返回时提示未保存修改。关闭总开关不清除已有选择，未知旧值保留。
+- 动态目录为空时显示操作指引与“重新读取”，刷新不修改隐藏名单，也不保证修复目录同步。
+- GDT 选项勾选前确认；设置保存使用 Snackbar 提示，不自动重启起点。
+- 不显示每项功能的说明性 `summary`；宿主包名保留当前值。
+- 已修复多选搜索框和包名编辑框的布局参数类型错误。
+
+## 使用
+
+1. 安装模块，在 LSPosed 中启用，并将起点加入作用域。
+2. 打开独立的 QD 设置页，按需开启功能；新功能默认关闭，不会自动全选。
+3. 我 Tab 和底部导航需先由起点上报菜单目录，再在对应子页选择隐藏项。导航目录采集需开启自定义底部导航并重启起点。
+4. 多选页点击“保存”才写入修改；更新设置后手动重启起点加载配置。
+
+保留现有配置，不需要卸载或清除数据。不要把“开关已打开”“Hook 已安装”当作效果已验证。
+
+## 当前验证情况与已知问题
+
+截至本轮记录（2026-10-06）：
+
+- 最新 Debug 构建通过，并覆盖安装到已核验的 Realme RMX2117，ADB 返回 `Success`。
+- 真机逐一打开 9 个多选子页及宿主包名编辑框通过；该检查期间设置页进程没有崩溃记录，未保存或改动用户选择。
+- 四项修正 Hook 在宿主日志中有匹配：书架浮窗、末页中间广告、小剧场各 1 个方法，闪屏上报 2 个方法；**实际隐藏效果仍需分别验证**。
+- 签到结果、奖励到账、媒体操作、章末过滤和背景实际下载 / 使用没有完整真机验证。
+- 我 Tab / 导航目录有历史 `IllegalArgumentException`；最新日志出现一次我 Tab 成功收集 21 项的记录，但导航及目录同步稳定性仍需确认。
+- 宿主曾发生 ANR：主线程快照处于 ConstraintLayout 测量，模块启动定位约耗时 10 秒。根因未确认、未修复，不能归因于某个 Hook，也不能因快照没有模块栈就排除间接影响。
+
+详细安装证据与接手续查步骤保存在本地交接文档中，该文档不上传仓库。
+
+## 构建
+
+- JDK 21、Gradle 8.7、AGP 8.5.2、Kotlin 1.9.22、KSP 1.9.22-1.0.17。
+- `compileSdk=33`、`minSdk=24`、`targetSdk=32`，Java / Kotlin JVM target 为 11。
+- Material Components 1.9.0、AndroidX Preference 1.2.0、YukiHookAPI 1.0.92、Xposed API 82、DexKit 2.0.3。
+- 在本地 `local.properties` 配置 Android SDK 路径，不提交该文件。
+
+Windows PowerShell：
+
+```powershell
+.\gradlew.bat :app:assembleDebug --no-daemon --console=plain --max-workers=4
+```
+
+产物：`app/build/outputs/apk/debug/app-debug.apk`。
+
+未配置私有签名时使用标准 Android Debug 签名。不要提交密钥、签名配置、APK 或反编译样本。构建后的自动安装约定见 [AGENTS.md](AGENTS.md)；安装冲突时停止，不卸载、不清数据。
+
+## 源码与资料
+
+- `HookEntry.kt`：初始化与设置共享。
+- `hooks/`：按功能划分的 Hook、DexKit 定位与安全日志。
+- `MainActivity.kt`、`OptionEditor.kt`、`SettingsViews.kt`：MD3 设置界面与编辑流程。
+- `MeTabCatalogProvider.kt`：受限菜单目录上报接口。
+- `Tutorial.md` 和 `Screenshots/`：历史资料，**不代表当前界面与功能**。
+- 本地 `.work/` 为可复用分析资料，`.trash/` 为配置备份，均不提交仓库。
+
+当前功能参考模块 3.3.6 的实现移植；参考 APK 不是起点宿主本体。宿主版本变更时需重新核对混淆类、方法签名和事件链。

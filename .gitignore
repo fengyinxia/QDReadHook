@@ -52,8 +52,8 @@ captures/
 
 # Keystore files
 # Uncomment the following lines if you do not want to check your keystore files in.
-#*.jks
-#*.keystore
+*.jks
+*.keystore
 
 # External native build folder generated in Android Studio 2.2 and later
 .externalNativeBuild
@@ -87,5 +87,19 @@ lint/tmp/
 #Other
 release
 归档
+
+# Local analysis, backups and APK samples
+.work/
+.trash/
+*.apk
+
+# Local-only handoff notes (do not commit or upload)
+/交接文档.md
+/接手文档.md
+
+# Credentials and private agent configuration
+secrets/
+auth.json
+trust.json
 
 

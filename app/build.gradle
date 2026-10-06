@@ -6,20 +6,30 @@ plugins {
 
 def keystorePropertiesFile = rootProject.file("keystore.properties")
 def keystoreProperties = new Properties()
-keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
+def hasCustomSigning = keystorePropertiesFile.exists()
+if (hasCustomSigning) {
+    keystorePropertiesFile.withInputStream { keystoreProperties.load(it) }
+}
 
 android {
     namespace 'cn.xihan.qdds'
-    compileSdk rootProject.targetSdkVersion
+    // 编译使用本机已安装的稳定 SDK；targetSdk 保持旧项目行为。
+    compileSdk 33
+
+    buildFeatures {
+        buildConfig true
+    }
 
     signingConfigs {
-        xihantest {
-            keyAlias keystoreProperties['keyAlias']
-            keyPassword keystoreProperties['keyPassword']
-            storeFile file(keystoreProperties['storeFile'])
-            storePassword keystoreProperties['storePassword']
-            enableV3Signing true
-            enableV4Signing true
+        if (hasCustomSigning) {
+            xihantest {
+                keyAlias keystoreProperties['keyAlias']
+                keyPassword keystoreProperties['keyPassword']
+                storeFile file(keystoreProperties['storeFile'])
+                storePassword keystoreProperties['storePassword']
+                enableV3Signing true
+                enableV4Signing true
+            }
         }
     }
 
@@ -33,8 +43,6 @@ android {
 
         // 仅保留中文语种的资源
         resConfigs 'zh'
-
-        signingConfig signingConfigs.xihantest
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -52,11 +60,12 @@ android {
             minifyEnabled true
             pseudoLocalesEnabled true
             // 签名信息配置
-            signingConfig signingConfigs.xihantest
+            if (hasCustomSigning) signingConfig signingConfigs.xihantest
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
         debug {
-            signingConfig signingConfigs.xihantest
+            // 无私有签名配置时使用 Android 标准调试签名。
+            if (hasCustomSigning) signingConfig signingConfigs.xihantest
         }
     }
     compileOptions {
@@ -98,6 +107,8 @@ dependencies {
     implementation "androidx.appcompat:appcompat:$appcompatVersion"
     implementation "com.google.android.material:material:$materialVersion"
     implementation 'androidx.preference:preference-ktx:1.2.0'
+    // 奖励广告入口存在混淆，按字符串和方法签名定位。
+    implementation 'org.luckypray:dexkit:2.0.3'
 
     // 基础依赖
     implementation "com.highcapable.yukihookapi:api:$YuKiHookVersion"

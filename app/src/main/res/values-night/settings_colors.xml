@@ -1,0 +1,10 @@
+<resources>
+    <color name="settings_primary">#80D5CF</color>
+    <color name="settings_on_primary">#003735</color>
+    <color name="settings_primary_container">#00504D</color>
+    <color name="settings_on_primary_container">#9CF1EB</color>
+    <color name="settings_surface">#101414</color>
+    <color name="settings_on_surface">#DEE4E3</color>
+    <color name="settings_on_surface_variant">#BEC9C7</color>
+    <color name="settings_outline">#889391</color>
+</resources>

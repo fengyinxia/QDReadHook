@@ -1,17 +1,79 @@
 <resources>
     <string name="app_name">QD</string>
-    <!-- Preference Titles -->
     <string name="main_title">主要</string>
     <string name="header">功能</string>
     <string name="packageName">包名设置</string>
     <string name="sw_autosignin">自动签到</string>
-    <!--自动关闭书架广告弹框-->
-    <!--启用旧版布局-->
-    <string name="sw_old_layout">启用旧版布局</string>
-    <!--本地至尊卡-->
-    <string name="sw_local_card">启用本地至尊卡</string>
-    <!--去书架右下角浮窗-->
-    <string name="sw_bookshelf_float">去书架右下角浮窗</string>
-    <!--去除底部导航栏中心广告-->
-    <string name="sw_bottom_ad">去除底部导航栏中心广告</string>
+    <string name="sw_reward_ad">免广告领取奖励</string>
+    <string name="sw_me_tab_options">自定义我 Tab 选项</string>
+    <string name="me_tab_hidden_items">隐藏的选项</string>
+    <string name="red_dot_options">小红点</string>
+    <string name="custom_navigation">自定义底部导航</string>
+    <string name="navigation_hidden_items">隐藏的导航项</string>
+    <string name="ad_block_options">广告拦截列表</string>
+    <string name="intercept_options">拦截设置列表</string>
+    <string name="comment_options">阅读页章评列表</string>
+    <string name="custom_chapter_end">开启自定义阅读页章末设置</string>
+    <string name="chapter_end_options">章末隐藏列表</string>
+    <string name="home_options">主页选项</string>
+    <string name="search_options">搜索选项</string>
+    <string name="member_card_background">解锁会员卡专属背景</string>
+    <!-- MD3 独立设置页：功能行不显示说明性 summary。 -->
+    <string name="settings_title">QD 设置</string>
+    <string name="group_automation">自动操作</string>
+    <string name="group_pages">页面定制</string>
+    <string name="group_reading">阅读体验</string>
+    <string name="group_cleanup">内容净化</string>
+    <string name="group_advanced">高级设置</string>
+    <string name="title_me_tab">我 Tab</string>
+    <string name="title_navigation">底部导航</string>
+    <string name="title_home">主页</string>
+    <string name="title_search">搜索</string>
+    <string name="title_comments">章评</string>
+    <string name="title_chapter_end">章末</string>
+    <string name="title_member_background">会员卡专属背景</string>
+    <string name="title_ads">广告屏蔽</string>
+    <string name="title_intercept">拦截选项</string>
+    <string name="title_package">宿主包名</string>
+    <string name="enable_customization">启用自定义</string>
+    <string name="action_help">帮助</string>
+    <string name="action_back">返回</string>
+    <string name="action_cancel">取消</string>
+    <string name="action_save">保存</string>
+    <string name="action_refresh">重新读取</string>
+    <string name="action_continue">继续编辑</string>
+    <string name="action_discard">放弃修改</string>
+    <string name="action_confirm">确认开启</string>
+    <string name="action_understood">知道了</string>
+    <string name="unsaved_title">放弃未保存的修改？</string>
+    <string name="unsaved_message">返回后，本页的修改不会保存。</string>
+    <string name="saved_restart">设置已保存，重启起点后生效</string>
+    <string name="sharing_unavailable">配置共享不可用</string>
+    <string name="sharing_help">请先在 LSPosed 中启用模块并确认起点在作用域内，再重新打开设置。当前配置不能保证被宿主读取。</string>
+    <string name="saved_local">设置已保存，但配置共享不可用</string>
+    <string name="help_title">使用帮助</string>
+    <string name="help_message">在 LSPosed 中启用模块，并将起点加入作用域。\n\n修改设置后，重启起点加载新配置；开关打开仅表示配置已开启，不代表功能已经验证生效。\n\n我 Tab 和底部导航目录由起点上报。目录为空时，打开对应页面后返回重新读取；重新读取不会修改隐藏名单，也不能修复目录同步异常。\n\n本页面不会自动重启起点、清除数据或修改账户信息。</string>
+    <string name="selection_hidden">勾选的项目将被隐藏</string>
+    <string name="selection_intercepted">勾选的项目将被拦截</string>
+    <string name="selection_enabled">勾选的功能将被开启</string>
+    <string name="section_options">可选项目</string>
+    <string name="section_saved">已保存项目</string>
+    <string name="section_general">通用</string>
+    <string name="section_home">主页与书架</string>
+    <string name="section_me">我页面</string>
+    <string name="section_reader">阅读页</string>
+    <string name="section_dialogs">弹窗与权限</string>
+    <string name="section_device">设备与分析</string>
+    <string name="section_behavior">其他行为</string>
+    <string name="search_options_hint">搜索项目</string>
+    <string name="empty_catalog_title">暂无可用目录</string>
+    <string name="empty_me_catalog">请打开起点的我页面，再返回重新读取。</string>
+    <string name="empty_navigation_catalog">请保存并开启自定义底部导航，重启起点后返回重新读取。</string>
+    <string name="catalog_help">目录仍为空时，可检查模块作用域；也可能是目录同步异常。重新读取只读取现有目录。</string>
+    <string name="catalog_refreshed">已重新读取现有目录</string>
+    <string name="empty_search">没有匹配的项目</string>
+    <string name="gdt_warning_title">开启 GDT 广告拦截？</string>
+    <string name="gdt_warning_message">这会停用广点通初始化，可能影响原生视频奖励的回退流程。是否将此项加入待保存的选择？</string>
+    <string name="package_hint">应用包名</string>
+    <string name="package_error">请输入有效的应用包名</string>
 </resources>
