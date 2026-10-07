@@ -14,14 +14,17 @@ internal object HomeSearchHook {
             scope.skip("主页宝箱提示", scope.methods("$host.ui.activity.MainGroupActivity", "getGlobalMsg"))
         }
         if ("book_shelf_daily_recommend" in home) {
-            val required = MethodsMatcher.create()
-                .add(MethodMatcher.create().paramTypes(listOf("int")).returnType("$host.repository.entity.BookItem"))
-                .add(MethodMatcher.create().paramTypes(listOf("$host.repository.entity.BookShelfItem")).returnType("void"))
-            val matcher = MethodMatcher.create().name("getHeaderItemCount").paramCount(0).returnType("int")
-                .declaredClass(ClassMatcher.create().methods(required))
-            val methods = scope.bridge.findMethod(FindMethod.create().matcher(matcher))
-                .mapNotNull { runCatching { it.getMethodInstance(scope.loader) }.getOrNull() }
-            scope.skip("书架每日导读", methods, 0)
+            HookSupport.attempt("书架每日导读定位") {
+                val methods = scope.lookup("bookshelf-daily-header-v1:$host") {
+                    val required = MethodsMatcher.create()
+                        .add(MethodMatcher.create().paramTypes(listOf("int")).returnType("$host.repository.entity.BookItem"))
+                        .add(MethodMatcher.create().paramTypes(listOf("$host.repository.entity.BookShelfItem")).returnType("void"))
+                    val matcher = MethodMatcher.create().name("getHeaderItemCount").paramCount(0).returnType("int")
+                        .declaredClass(ClassMatcher.create().methods(required))
+                    FindMethod.create().matcher(matcher)
+                }
+                scope.skip("书架每日导读", methods, 0)
+            }
             scope.skip("每日导读数据", scope.methods("$host.ui.modules.bookshelf.BookShelfViewModel", "fetchDailyReading", 2))
         }
         if ("book_shelf_top_title" in home) scope.skip("书架顶部标题", scope.methods(

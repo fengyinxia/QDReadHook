@@ -38,8 +38,8 @@ android {
         applicationId "cn.xihan.qdds"
         minSdk rootProject.minSdkVersion
         targetSdk rootProject.targetSdkVersion
-        versionCode 1
-        versionName "1.0"
+        versionCode rootProject.appVersionCode.toInteger()
+        versionName rootProject.appVersionName
 
         // 仅保留中文语种的资源
         resConfigs 'zh'

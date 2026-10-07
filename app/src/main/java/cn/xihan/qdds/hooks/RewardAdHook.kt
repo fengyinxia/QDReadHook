@@ -1,16 +1,11 @@
 package cn.xihan.qdds.hooks
 
 import android.app.Activity
-import android.content.Context
 import android.os.Bundle
 import de.robv.android.xposed.XC_MethodHook
 import de.robv.android.xposed.XposedBridge
 import de.robv.android.xposed.XposedHelpers
 import org.json.JSONObject
-import org.luckypray.dexkit.DexKitBridge
-import org.luckypray.dexkit.query.FindMethod
-import org.luckypray.dexkit.query.matchers.ClassMatcher
-import org.luckypray.dexkit.query.matchers.MethodMatcher
 import java.lang.reflect.Method
 import java.util.HashMap
 
@@ -22,49 +17,37 @@ internal object RewardAdHook {
     private const val REWARD_CONFIG = "$HOST_PACKAGE.repository.entity.config.RewardVideoConfig"
     @Volatile private var bypassHealthy = false
 
-    fun install(context: Context) {
+    fun install(scope: OptionHookScope) {
         HookSupport.attempt(FEATURE) {
-            System.loadLibrary("dexkit")
-            DexKitBridge.create(context.applicationInfo.sourceDir).use { bridge ->
-                val loader = context.classLoader
-                if (!installRewardCallback(bridge, loader)) {
-                    HookSupport.log(FEATURE, "奖励入口定位失败，保留原有广告和领取流程")
-                    return@use
-                }
-                // 只有核心奖励回调安装成功，才启用广告窗口及相关状态处理。
-                HookSupport.attempt("奖励广告记录") { installAdRecords(loader) }
-                HookSupport.attempt("奖励标识") { installRewardId(loader) }
-                HookSupport.attempt("互动奖励") { installInteractReward(bridge, loader) }
-                HookSupport.attempt("奖励广告窗口") { installAdActivities(loader) }
+            val loader = scope.loader
+            if (!installRewardCallback(scope)) {
+                HookSupport.log(FEATURE, "奖励入口定位失败，保留原有广告和领取流程")
+                return@attempt
             }
+            // 只有核心奖励回调安装成功，才启用广告窗口及相关状态处理。
+            HookSupport.attempt("奖励广告记录") { installAdRecords(loader) }
+            HookSupport.attempt("奖励标识") { installRewardId(loader) }
+            HookSupport.attempt("互动奖励") { installInteractReward(scope) }
+            HookSupport.attempt("奖励广告窗口") { installAdActivities(loader) }
         }
     }
 
-    private fun installRewardCallback(bridge: DexKitBridge, loader: ClassLoader): Boolean {
-        val callbacks = bridge.findMethod(
-            FindMethod.create().searchPackages(WEB_PACKAGE).matcher(
-                MethodMatcher.create()
-                    .declaredClass(ClassMatcher.create().usingStrings(
-                        "WebViewPlugin：webview ready to call js...func="
-                    ))
-                    .paramTypes("java.lang.String", "org.json.JSONObject", "int")
-                    .returnType("void")
-            )
-        ).mapNotNull { runCatching { it.getMethodInstance(loader) }.getOrNull() }
+    private fun installRewardCallback(scope: OptionHookScope): Boolean {
+        val callbacks = scope.find(
+            classStrings = listOf("WebViewPlugin：webview ready to call js...func="),
+            params = listOf("java.lang.String", "org.json.JSONObject", "int"),
+            returns = "void", searchPackage = WEB_PACKAGE
+        )
         HookSupport.log(FEATURE, "Web 回调候选=${callbacks.size}")
         val callback = callbacks.singleOrNull() ?: return false
 
         // R8 会将奖励插件重打包到 bf 等包，不能按宿主包名限制搜索。
         // 字符串、完整签名及父类关系共同限定匹配范围。
-        val rewards = bridge.findMethod(
-            FindMethod.create().matcher(
-                MethodMatcher.create()
-                    .declaredClass(ClassMatcher.create().usingStrings("execCallback", "callbackId", "status"))
-                    .paramTypes("int", "java.lang.String", REWARD_CONFIG, "java.lang.String")
-                    .returnType("void")
-            )
-        ).mapNotNull { runCatching { it.getMethodInstance(loader) }.getOrNull() }
-            .filter { callback.declaringClass.isAssignableFrom(it.declaringClass) }
+        val rewards = scope.find(
+            classStrings = listOf("execCallback", "callbackId", "status"),
+            params = listOf("int", "java.lang.String", REWARD_CONFIG, "java.lang.String"),
+            returns = "void"
+        ).filter { callback.declaringClass.isAssignableFrom(it.declaringClass) }
         HookSupport.log(FEATURE, "奖励入口候选=${rewards.size}")
         if (rewards.isEmpty()) return false
 
@@ -131,15 +114,11 @@ internal object RewardAdHook {
         }
     }
 
-    private fun installInteractReward(bridge: DexKitBridge, loader: ClassLoader) {
-        val methods = bridge.findMethod(
-            FindMethod.create().matcher(
-                MethodMatcher.create().paramTypes(
-                    "$HOST_PACKAGE.ui.modules.interact.InteractHBContainerView",
-                    "kotlin.jvm.internal.Ref\$ObjectRef", "java.lang.Integer"
-                )
-            )
-        ).mapNotNull { runCatching { it.getMethodInstance(loader) }.getOrNull() }
+    private fun installInteractReward(scope: OptionHookScope) {
+        val methods = scope.find(params = listOf(
+            "$HOST_PACKAGE.ui.modules.interact.InteractHBContainerView",
+            "kotlin.jvm.internal.Ref\$ObjectRef", "java.lang.Integer"
+        ))
         methods.forEach { method: Method ->
             XposedBridge.hookMethod(method, object : XC_MethodHook() {
                 override fun beforeHookedMethod(param: MethodHookParam) {

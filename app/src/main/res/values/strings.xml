@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">QD</string>
+    <string name="app_name">起点轻读</string>
     <string name="main_title">主要</string>
     <string name="header">功能</string>
     <string name="packageName">包名设置</string>
@@ -19,7 +19,7 @@
     <string name="search_options">搜索选项</string>
     <string name="member_card_background">解锁会员卡专属背景</string>
     <!-- MD3 独立设置页：功能行不显示说明性 summary。 -->
-    <string name="settings_title">QD 设置</string>
+    <string name="settings_title">起点轻读</string>
     <string name="group_automation">自动操作</string>
     <string name="group_pages">页面定制</string>
     <string name="group_reading">阅读体验</string>

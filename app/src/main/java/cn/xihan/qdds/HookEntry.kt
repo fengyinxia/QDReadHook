@@ -2,11 +2,10 @@ package cn.xihan.qdds
 
 import android.app.Application
 import android.app.Instrumentation
-import cn.xihan.qdds.hooks.AdditionalFeatureHooks
 import cn.xihan.qdds.hooks.AutoSignHook
 import cn.xihan.qdds.hooks.HookSupport
 import cn.xihan.qdds.hooks.MeTabHook
-import cn.xihan.qdds.hooks.RewardAdHook
+import cn.xihan.qdds.hooks.HookStartup
 import com.highcapable.yukihookapi.YukiHookAPI
 import com.highcapable.yukihookapi.annotation.xposed.InjectYukiHookWithXposed
 import com.highcapable.yukihookapi.hook.xposed.proxy.IYukiHookXposedInit
@@ -41,6 +40,11 @@ class HookEntry : IYukiHookXposedInit {
                         val application = param.args[0] as? Application ?: return
                         if (!hookInstallationStarted.compareAndSet(false, true)) return
                         HookSupport.attempt("初始化") {
+                            // 推送等子进程不需要 UI Hook，更不能重复启动 Dex 扫描。
+                            if (!HookStartup.isMainProcess(application)) {
+                                HookSupport.log("初始化", "非主进程，跳过界面 Hook")
+                                return@attempt
+                            }
                             val settings = XSharedPreferences(
                                 BuildConfig.APPLICATION_ID,
                                 "${BuildConfig.APPLICATION_ID}_preferences"
@@ -54,9 +58,8 @@ class HookEntry : IYukiHookXposedInit {
                                 "初始化", "宿主版本=$versionCode，自动签到=$autoSign，免广告奖励=$rewardAd"
                             )
                             if (autoSign) AutoSignHook.install(application.classLoader)
-                            if (rewardAd) RewardAdHook.install(application)
                             MeTabHook.install(application, settings)
-                            AdditionalFeatureHooks.install(application, settings)
+                            HookStartup.install(application, settings, rewardAd)
                         }
                     }
                 }
