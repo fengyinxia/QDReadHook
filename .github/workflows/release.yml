@@ -25,6 +25,16 @@ jobs:
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
 
+      - name: Decode release keystore
+        env:
+          KEYSTORE_BASE64: ${{ secrets.KEYSTORE_BASE64 }}
+        run: echo "$KEYSTORE_BASE64" | base64 -d > qdreadhook-release.jks
+
+      - name: Create keystore.properties
+        env:
+          KEYSTORE_PROPERTIES: ${{ secrets.KEYSTORE_PROPERTIES }}
+        run: printf '%s' "$KEYSTORE_PROPERTIES" > keystore.properties
+
       - name: Build release APK
         run: ./gradlew :app:assembleRelease --no-daemon --console=plain
 
