@@ -88,7 +88,4 @@ app/src/main/java/cn/xihan/qdds/
 
 ## 📄 其他
 
-- 详细修改教程与对照截图见 [Tutorial.md](Tutorial.md)
-- 实现边界与历史记录见 [AGENTS.md](AGENTS.md)
-
 本项目仅供学习交流使用，请于下载后 24 小时内删除。
